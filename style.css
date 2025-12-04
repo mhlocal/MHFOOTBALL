@@ -1,0 +1,359 @@
+/* --- 1. GLOBAL RESETS & BODY --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    padding: 20px;
+}
+
+/* Modal ပွင့်ချိန် နောက်ခံ Scroll မရအောင်ပိတ်ခြင်း */
+body.no-scroll {
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1000px; /* TV အတွက် အနည်းငယ် ပိုကျယ်အောင်ထားသည် */
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- 2. DROPDOWN FILTER --- */
+.dropdown {
+    position: relative;
+    display: block;
+    margin: 0 auto 20px auto;
+    width: fit-content;
+    text-align: center;
+    z-index: 100; /* Card တွေအပေါ်ကနေ ပေါ်အောင် */
+}
+
+.dropbtn {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    min-width: 200px;
+}
+
+.dropbtn:hover { background-color: #2980b9; }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 101;
+    border-radius: 5px;
+    overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover { background-color: #f1f1f1; }
+.show { display: block; }
+
+/* --- 3. MATCH LIST (GRID VIEW FOR TV) --- */
+.match-list {
+    display: grid;
+    /* အနည်းဆုံး 280px ရှိရမယ်၊ နေရာဆံ့ရင် ဘေးတိုက်စီမယ် (Responsive Grid) */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+/* Match Card Style */
+.match-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    height: 100%; /* ကဒ်အမြင့်ညီအောင် */
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: #fff;
+}
+
+/* Match Details */
+.match-title {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.match-date {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Teams Layout */
+.teams-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Team Logo (Fit Center) */
+.team-badge {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;     /* ပုံမပြတ်အောင် */
+    object-position: center; /* အလယ်တည့်တည့် */
+}
+
+.vs-text {
+    margin: 0 15px;
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.2rem;
+}
+
+/* --- 4. BADGES --- */
+.live-badge {
+    background-color: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.hd-badge {
+    background-color: #3498db; /* Blue */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.loading {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    grid-column: 1 / -1; /* Loading စာသားကို အလယ်မှာပြရန် */
+}
+
+/* --- 5. MODAL (POPUP) --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.95);
+    backdrop-filter: blur(5px);
+    overflow-y: auto; /* Scrollable if needed */
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 3% auto; 
+    padding: 15px;
+    border: 1px solid #444;
+    width: 95%;
+    max-width: 900px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-title-text {
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    padding-right: 30px; /* Close button နဲ့ မထပ်အောင် */
+}
+
+.close-btn {
+    color: #ccc;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1002;
+    line-height: 1;
+}
+.close-btn:hover { color: white; }
+
+/* Video Player Box (16:9) */
+#player-container {
+    position: relative;
+    padding-bottom: 56.25%; 
+    height: 0;
+    overflow: hidden;
+    background: #000;
+    border-radius: 8px;
+    margin-bottom: 15px; 
+    border: 1px solid #333;
+}
+
+#player-container iframe {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%; border: 0;
+}
+
+/* Countdown Styling */
+.countdown-box {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: radial-gradient(circle, #2c3e50 0%, #000000 100%);
+    text-align: center;
+    padding: 20px;
+}
+
+.countdown-timer {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3498db;
+    margin: 15px 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* --- 6. SERVER SELECTION (TV BUTTONS) --- */
+#server-selection-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid #333;
+}
+
+.server-btn {
+    background-color: #333;
+    color: #fff;
+    border: 2px solid #555;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    transition: 0.2s;
+}
+
+.server-btn:hover {
+    background-color: #3498db;
+    border-color: #3498db;
+    transform: translateY(-2px);
+}
+
+.server-btn.active-server {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+}
+
+/* --- 7. TV REMOTE FOCUS STYLES --- */
+/* Remote နဲ့ ရွေးမိတဲ့အခါ အဝါရောင် ဘောင်ကွပ်မည် */
+.match-card:focus, 
+.dropbtn:focus, 
+.server-btn:focus,
+.close-btn:focus,
+.dropdown-content a:focus {
+    outline: 4px solid #f1c40f; /* Yellow Outline */
+    transform: scale(1.05);     /* Slightly Zoom */
+    z-index: 10;                /* Bring to front */
+    background-color: #e8f8f5;  /* Light background */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Dropdown link focus specific */
+.dropdown-content a:focus {
+    background-color: #3498db;
+    color: white;
+    outline: none; /* Custom style overrides outline */
+    border-left: 5px solid #f1c40f;
+}
+
+/* Server Button Focus Specific */
+.server-btn:focus {
+    background-color: #3498db;
+    border-color: #f1c40f;
+    color: white;
+}
+
+/* --- 8. MOBILE RESPONSIVE --- */
+@media screen and (max-width: 600px) {
+    .match-list {
+        grid-template-columns: 1fr; /* ဖုန်းမှာ တစ်တိုင်ပဲပြမည် (List View) */
+    }
+    
+    .container {
+        padding: 0 10px;
+    }
+    
+    .server-btn {
+        flex: 1 1 100%; /* ဖုန်းမှာ ခလုတ်အပြည့်ပြမည် */
+    }
+    
+    .countdown-timer {
+        font-size: 1.5rem;
+    }
+}
