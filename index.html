@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Htet Football Live</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Min Htet Football Live</h1>
+
+        <div class="dropdown">
+            <button onclick="toggleDropdown()" class="dropbtn" tabindex="0">All Matches 🔽</button>
+            <div id="filterDropdown" class="dropdown-content">
+                <a href="#" onclick="filterData('all')" tabindex="0">All Matches</a>
+                <a href="#" onclick="filterData('popular')" tabindex="0">Popular Matches</a>
+                <a href="#" onclick="filterData('live')" style="color: #e74c3c; font-weight: bold;" tabindex="0">Live Matches 🔴</a>
+            </div>
+        </div>
+
+        <div id="match-container" class="match-list">
+            </div>
+    </div>
+
+    <div id="video-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()" tabindex="0">&times;</span>
+            <h3 id="modal-title" class="modal-title-text"></h3>
+            
+            <div id="player-container"></div>
+
+            <div id="server-selection-container"></div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
